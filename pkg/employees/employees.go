@@ -24,11 +24,15 @@ type EmployeeApiResponse struct {
 }
 
 type Employee struct {
-	ID             int64
-	EmployeeName   string
-	EmployeeSalary int64
-	EmployeeAge    int64
-	ProfileImage   string
+	ID             string `json:"id"`
+	EmployeeName   string `json:"employee_name"`
+	EmployeeSalary string `json:"employee_salary"`
+	EmployeeAge    string `json:"employee_age"`
+	ProfileImage   string `json:"profile_image"`
+}
+
+type Employees struct {
+	Employees []Employee
 }
 
 const EMPLOYEES_URL = "http://dummy.restapiexample.com/api/v1/employees"
@@ -43,13 +47,24 @@ func Run(args []string) {
 	}
 	switch parsedArgs.Command {
 	case "list":
-		listEmployees()
+		if resp, err := listEmployees(); err != nil {
+			fmt.Printf("[Error] %v", err)
+		} else {
+			resp.Print()
+		}
 	case "show":
-		showEmployee(parsedArgs.EmployeeID)
+		if resp, err := showEmployee(parsedArgs.EmployeeID); err != nil {
+			fmt.Printf("[Error] %v", err)
+		} else {
+			resp.Print()
+		}
 	}
 }
 
 func parseArgs(args []string) (Args, error) {
+	if len(args) < 2 {
+		return Args{}, fmt.Errorf("You must provide arguments")
+	}
 	valid := false
 	command := args[1]
 	var employeeID int64
@@ -62,6 +77,9 @@ func parseArgs(args []string) (Args, error) {
 		return Args{}, fmt.Errorf("Invalid Command: %s", command)
 	}
 	if command == "show" {
+		if len(args) < 3 {
+			return Args{}, fmt.Errorf("You must provide employee ID")
+		}
 		var err error
 		employeeID, err = strconv.ParseInt(args[2], 10, 64)
 		if err != nil {
@@ -74,21 +92,21 @@ func parseArgs(args []string) (Args, error) {
 	}, nil
 }
 
-func listEmployees() ([]Employee, error) {
+func listEmployees() (Employees, error) {
 	resp, err := http.Get(EMPLOYEES_URL)
 	if err != nil {
-		return []Employee{}, err
+		return Employees{}, err
 	}
 	responseData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return []Employee{}, err
+		return Employees{}, err
 	}
 	var apiResponse EmployeesApiResponse
 	json.Unmarshal(responseData, &apiResponse)
 	if apiResponse.Status != "success" {
-		return []Employee{}, fmt.Errorf("Invalid API response")
+		return Employees{}, fmt.Errorf("Invalid API response")
 	}
-	return apiResponse.Data, nil
+	return Employees{Employees: apiResponse.Data}, nil
 }
 
 func showEmployee(employeeID int64) (Employee, error) {
@@ -107,4 +125,19 @@ func showEmployee(employeeID int64) (Employee, error) {
 		return Employee{}, fmt.Errorf("Invalid API response")
 	}
 	return apiResponse.Data, nil
+}
+
+func (employees Employees) Print() {
+	for _, employee := range employees.Employees {
+		employee.Print()
+		fmt.Printf("--------------------------------\n\n")
+	}
+}
+
+func (employee Employee) Print() {
+	fmt.Printf("Employee ID: %s\n", employee.ID)
+	fmt.Printf("Employee Name: %s\n", employee.EmployeeName)
+	fmt.Printf("Employee Salary: %s\n", employee.EmployeeSalary)
+	fmt.Printf("Employee Age: %s\n", employee.EmployeeAge)
+	fmt.Printf("Profile Image: %s\n", employee.ProfileImage)
 }
