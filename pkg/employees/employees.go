@@ -8,33 +8,6 @@ import (
 	"strconv"
 )
 
-type Args struct {
-	Command    string
-	EmployeeID int64
-}
-
-type EmployeesApiResponse struct {
-	Status string     `json:"status"`
-	Data   []Employee `json:"data"`
-}
-
-type EmployeeApiResponse struct {
-	Status string   `json:"status"`
-	Data   Employee `json:"data"`
-}
-
-type Employee struct {
-	ID             string `json:"id"`
-	EmployeeName   string `json:"employee_name"`
-	EmployeeSalary string `json:"employee_salary"`
-	EmployeeAge    string `json:"employee_age"`
-	ProfileImage   string `json:"profile_image"`
-}
-
-type Employees struct {
-	Employees []Employee
-}
-
 const EMPLOYEES_URL = "http://dummy.restapiexample.com/api/v1/employees"
 const EMPLOYEE_URL = "http://dummy.restapiexample.com/api/v1/employee/%s"
 
@@ -92,21 +65,21 @@ func parseArgs(args []string) (Args, error) {
 	}, nil
 }
 
-func listEmployees() (Employees, error) {
+func listEmployees() (EmployeeList, error) {
 	resp, err := http.Get(EMPLOYEES_URL)
 	if err != nil {
-		return Employees{}, err
+		return EmployeeList{}, err
 	}
 	responseData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return Employees{}, err
+		return EmployeeList{}, err
 	}
 	var apiResponse EmployeesApiResponse
 	json.Unmarshal(responseData, &apiResponse)
 	if apiResponse.Status != "success" {
-		return Employees{}, fmt.Errorf("Invalid API response")
+		return EmployeeList{}, fmt.Errorf("Invalid API response")
 	}
-	return Employees{Employees: apiResponse.Data}, nil
+	return EmployeeList{Employees: apiResponse.Data}, nil
 }
 
 func showEmployee(employeeID int64) (Employee, error) {
@@ -127,7 +100,7 @@ func showEmployee(employeeID int64) (Employee, error) {
 	return apiResponse.Data, nil
 }
 
-func (employees Employees) Print() {
+func (employees EmployeeList) Print() {
 	for _, employee := range employees.Employees {
 		employee.Print()
 		fmt.Printf("--------------------------------\n\n")
