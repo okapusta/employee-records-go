@@ -16,18 +16,18 @@ var validArgs = []string{"list", "show"}
 func Run(args []string) {
 	parsedArgs, err := parseArgs(args)
 	if err != nil {
-		fmt.Printf("[Error] %v", err)
+		fmt.Printf("[Error] %v\n", err)
 	}
 	switch parsedArgs.Command {
 	case "list":
 		if resp, err := listEmployees(); err != nil {
-			fmt.Printf("[Error] %v", err)
+			fmt.Printf("[Error] %v\n", err)
 		} else {
 			resp.Print()
 		}
 	case "show":
 		if resp, err := showEmployee(parsedArgs.EmployeeID); err != nil {
-			fmt.Printf("[Error] %v", err)
+			fmt.Printf("[Error] %v\n", err)
 		} else {
 			resp.Print()
 		}
