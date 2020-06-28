@@ -20,6 +20,7 @@ Allows user to list / show employees
     ```
       $ git clone https://github.com/syndbg/goenv.git ~/.goenv```
     ```
+    ```
     $ echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bash_profile
     $ echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bash_profile
     ```
