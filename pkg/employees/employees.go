@@ -77,7 +77,7 @@ func listEmployees() (EmployeeList, error) {
 	var apiResponse EmployeesApiResponse
 	json.Unmarshal(responseData, &apiResponse)
 	if apiResponse.Status != "success" {
-		return EmployeeList{}, fmt.Errorf("Invalid API response")
+		return EmployeeList{}, fmt.Errorf("Invalid API response: %s", apiResponse.Message)
 	}
 	return EmployeeList{Employees: apiResponse.Data}, nil
 }
@@ -95,7 +95,7 @@ func showEmployee(employeeID int64) (Employee, error) {
 	var apiResponse EmployeeApiResponse
 	json.Unmarshal(responseData, &apiResponse)
 	if apiResponse.Status != "success" {
-		return Employee{}, fmt.Errorf("Invalid API response")
+		return Employee{}, fmt.Errorf("Invalid API response: %s", apiResponse.Message)
 	}
 	return apiResponse.Data, nil
 }

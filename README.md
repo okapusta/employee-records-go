@@ -3,7 +3,7 @@ employee-records-go
 
 Allows user to list / show employees
 
-1. Usage
+#### 1. Usage
 
   - List Employees
 
@@ -13,6 +13,6 @@ Allows user to list / show employees
 
     `employees show ID`
 
-2. Building
+#### 2. Building
 
-3. Testing
+#### 3. Testing

@@ -6,13 +6,15 @@ type Args struct {
 }
 
 type EmployeesApiResponse struct {
-	Status string     `json:"status"`
-	Data   []Employee `json:"data"`
+	Status  string     `json:"status"`
+	Data    []Employee `json:"data"`
+	Message string     `json:message`
 }
 
 type EmployeeApiResponse struct {
-	Status string   `json:"status"`
-	Data   Employee `json:"data"`
+	Status  string   `json:"status"`
+	Data    Employee `json:"data"`
+	Message string   `json:message`
 }
 
 type Employee struct {

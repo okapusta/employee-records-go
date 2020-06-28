@@ -10,6 +10,14 @@
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:eed2e1b6ff7e8a55280d3f1f5af7a67ab01f4e73a4b2602685451ef225c6187f"
+  name = "github.com/jarcoal/httpmock"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b71b92c1768cc65cad56c7ea6df054b4eade747f"
+  version = "v1.0.5"
+
+[[projects]]
   digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
@@ -18,22 +26,9 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:23472f69a3ee7225de2f104aa48c6456959d1c155e45035c9845806d83109190"
-  name = "github.com/stretchr/objx"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "ea4fe68685ee0d3cee7032121851b57e7494e8ea"
-  version = "v0.2.0"
-
-[[projects]]
-  digest = "1:0357d51eb26b9b6aee097fca537eac00d8aebb7e85163c0ee1e45bf8d0373d41"
+  digest = "1:2c8bb9a0858e2ab458c1641345b6eaa3754b7ae453f8d30b15701f8b12b7ead7"
   name = "github.com/stretchr/testify"
-  packages = [
-    ".",
-    "assert",
-    "http",
-    "mock",
-  ]
+  packages = ["assert"]
   pruneopts = "UT"
   revision = "f654a9112bbeac49ca2cd45bfbe11533c4666cf8"
   version = "v1.6.1"
@@ -49,6 +44,9 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/stretchr/testify"]
+  input-imports = [
+    "github.com/jarcoal/httpmock",
+    "github.com/stretchr/testify/assert",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
